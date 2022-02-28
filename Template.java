@@ -20,6 +20,7 @@ public class Template extends JFrame {
     public Template() {
         setPreferredSize(d);
         setMinimumSize(d);
+        addKeyListener(this.keyboard);
 
         // Is window Re-sizable.
         setResizable(false);
@@ -46,34 +47,40 @@ class Screen extends JPanel {
     private int width;
     private int height;
 
-    private Color c = null;
+    private char color = 'r';
 
     public Screen(int width, int height) {
+        super();
         this.width = width;
         this.height = height;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        // Runs the Method once to initialize the Screen
-        drawString();
+        super.paintComponent(g);
+        
+        // This code runs when the Screen is initialized
+        g.setColor(Color.red.darker());
+        g.drawString("Press enter to change the color", 5, 25);
+        this.color = 'g';
     }
 
     public void drawString() {
         // Getting the Graphics Object with 'getGraphics()'
         Graphics g = getGraphics();
 
-        // Shifting the Color to (r g or b)
-        if (this.c == null)
-            this.c = Color.red.darker();
-        else if (this.c == Color.red.darker())
-            this.c = Color.green.darker();
-        else if (this.c == Color.green.darker())
-            this.c = Color.blue.darker();
-        else this.c = Color.red.darker();
+        // Setting the correct color, then cycling to the next one
+        if (this.color == 'r') {
+            g.setColor(Color.red.darker());
+            this.color = 'g';
+        } else if (this.color == 'g') {
+            g.setColor(Color.green.darker());
+            this.color = 'b';
+        } else {
+            g.setColor(Color.blue.darker());
+            this.color = 'r';
+        }
 
-        // Sets the Color and draws the String to the Screen
-        g.setColor(c);
         g.drawString("Press enter to change the color", 5, 25);
     }
 }
